@@ -27,9 +27,14 @@ def update_user(
         email: str = None,
         first_name: str = None,
         last_name: str = None
-) -> None:
-    user = User.objects.get(id=user_id)
+) -> bool:
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return False
     if username is not None:
+        if User.objects.filter(username=username).exclude(id=user_id).exists():
+            return False
         user.username = username
     if email is not None:
         user.email = email
@@ -40,3 +45,4 @@ def update_user(
     if password is not None:
         user.set_password(password)
     user.save()
+    return True

@@ -93,7 +93,8 @@ class Ticket(models.Model):
     seat = IntegerField()
 
     def __str__(self) -> str:
-        formatted_show_time = self.movie_session.show_time.strftime(
+        local_show_time = timezone.localtime(self.movie_session.show_time)
+        formatted_show_time = local_show_time.strftime(
             "%Y-%m-%d %H:%M:%S"
         )
         return (f"{self.movie_session.movie.title} "

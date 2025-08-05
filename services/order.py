@@ -2,7 +2,6 @@ from datetime import datetime
 from db.models import Order, Ticket, User, MovieSession
 from django.db.models import QuerySet
 from django.db import transaction
-from django.utils import timezone
 
 
 def create_order(
@@ -15,8 +14,7 @@ def create_order(
         order_info = {"user": user}
         if date:
             if isinstance(date, str):
-                naive_date = datetime.strptime(date, "%Y-%m-%d %H:%M")
-                date = timezone.make_aware(naive_date)
+                date = datetime.strptime(date, "%Y-%m-%d %H:%M")
             order_info["created_at"] = date
         order = Order.objects.create(**order_info)
         for ticket_info in tickets:
